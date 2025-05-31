@@ -1,24 +1,39 @@
 import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 import styles from './LoginPage.module.css';
+
+const SITE_KEY = '6Lf7flErAAAAAO012YJ5j4nZ85gjyzkXd2mGvBqn'; // Google'dan aldığın reCAPTCHA v2 site key
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
+ const handleCaptchaChange = (token: string | null) => {
+  console.log("Captcha Token Geldi:", token);
+  setRecaptchaToken(token);
+};
+
 
   const handleLogin = async () => {
-    try {
-    const response = await fetch('https://localhost:7277/api/auth/login', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    usernameOrEmail: email,
-    password: password
-  })
-});
+    if (!recaptchaToken) {
+      alert('Lütfen reCAPTCHA doğrulamasını tamamlayın.');
+      return;
+    }
 
+    try {
+      const response = await fetch('https://localhost:7277/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          usernameOrEmail: email,
+          password: password,
+          recaptchaToken: recaptchaToken, // reCAPTCHA token backend'e gidiyor
+        }),
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -26,12 +41,12 @@ function LoginPage() {
         return;
       }
 
-      const data = await response.json(); // { token: "...", expiresIn: 3600 }
+      const data = await response.json();
 
       if (data.token) {
         localStorage.setItem('token', data.token);
         alert('Giriş başarılı!');
-        window.location.href = '/'; // yönlendirme
+        window.location.href = '/';
       } else {
         alert('Token alınamadı!');
       }
@@ -65,6 +80,10 @@ function LoginPage() {
           className={styles.input}
         />
         <br />
+
+      
+        <ReCAPTCHA sitekey={SITE_KEY} onChange={handleCaptchaChange} />
+
         <button onClick={handleLogin} className={styles.button}>
           Giriş Yap
         </button>
@@ -72,7 +91,7 @@ function LoginPage() {
 
       <div>
         <p>veya</p>
-        <GoogleLoginButton/>
+        <GoogleLoginButton />
       </div>
     </div>
   );

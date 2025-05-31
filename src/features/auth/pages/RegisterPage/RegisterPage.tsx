@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './RegisterPage.module.css';
 
 const RegisterPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -22,7 +23,7 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    // Buraya reCAPTCHA doğrulama da eklenebilir (isteğe bağlı)
     try {
       const response = await fetch('https://localhost:7277/api/Auth/register', {
         method: 'POST',
@@ -43,35 +44,30 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '0 auto', padding: 24 }}>
-      <h2>Kayıt Ol</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Üye Ol</h2>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label className={styles.formLabel}>
           Ad Soyad:
-          <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required />
+          <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.formLabel}>
           Kullanıcı Adı:
-          <input type="text" name="username" value={form.username} onChange={handleChange} required />
+          <input type="text" name="username" value={form.username} onChange={handleChange} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.formLabel}>
           Email:
-          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+          <input type="email" name="email" value={form.email} onChange={handleChange} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.formLabel}>
           Şifre:
-          <input type="password" name="password" value={form.password} onChange={handleChange} required />
+          <input type="password" name="password" value={form.password} onChange={handleChange} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.formLabel}>
           Şifre Tekrar:
-          <input type="password" name="passwordConfirm" value={form.passwordConfirm} onChange={handleChange} required />
+          <input type="password" name="passwordConfirm" value={form.passwordConfirm} onChange={handleChange} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.formLabel}>
           Two-Factor Türü:
           <input
             type="number"
@@ -80,14 +76,22 @@ const RegisterPage: React.FC = () => {
             onChange={handleChange}
             min={0}
             max={2}
+            className={styles.input}
           />
-          <small> (0: Authenticator, 1: SMS, 2: Email)</small>
+          <small className={styles.smallText}>(0: Authenticator, 1: SMS, 2: Email)</small>
         </label>
-        <br />
-        <button type="submit" style={{ marginTop: 10 }}>Kayıt Ol</button>
+
+      
+<div className={styles.recaptchaPlaceholder}>
+  [reCAPTCHA alanı buraya gelecek]
+</div>
+
+        <button type="submit" className={styles.button}>Üye Ol</button>
       </form>
-      {message && <p style={{ marginTop: 20 }}>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
+      
     </div>
+    
   );
 };
 

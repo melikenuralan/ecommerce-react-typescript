@@ -1,34 +1,42 @@
 import React from 'react';
+import { GoogleLogin } from '@react-oauth/google';
 
-interface GoogleLoginButtonProps {
-    onClick: () => void;
-}
+const GoogleLoginButton: React.FC = () => {
+    const handleSuccess = async (credentialResponse: any) => {
+        const idToken = credentialResponse.credential;
 
-const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onClick }) => {
+        try {
+            const response = await fetch("https://localhost:7277/api/auth/google-login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ idToken: idToken , provider: "Google"}),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                localStorage.setItem("token", result.token.accessToken);
+                alert("✅ Giriş başarılı!");
+                // İsteğe göre yönlendir
+                // window.location.href = "/";
+            } else {
+                const err = await response.text();
+                alert("❌ Hata: " + err);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("❌ Sunucuya bağlanırken hata oluştu.");
+        }
+    };
+
+    const handleError = () => {
+        alert("Google oturum açma başarısız oldu");
+    };
+
     return (
-        <button
-            onClick={onClick}
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '10px 20px',
-                backgroundColor: '#4285F4',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 'bold',
-            }}
-        >
-            <img
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="Google Logo"
-                style={{ width: '20px', height: '20px', marginRight: '10px' }}
-            />
-            Sign in with Google
-        </button>
+        <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={handleError}
+        />
     );
 };
 

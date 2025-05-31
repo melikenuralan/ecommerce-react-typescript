@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GoogleLoginButton from '../components/GoogleLoginButton';
+import GoogleLoginButton from '../../components/GoogleLoginButton';
 import styles from './LoginPage.module.css';
 
 function LoginPage() {
@@ -72,7 +72,7 @@ function LoginPage() {
 
       <div>
         <p>veya</p>
-        <GoogleLoginButton onClick={() => alert('Google Login butonuna tıklandı')} />
+        <GoogleLoginButton/>
       </div>
     </div>
   );

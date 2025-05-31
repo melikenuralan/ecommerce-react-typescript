@@ -1,0 +1,67 @@
+/* LoginPage.module.css */
+
+.container {
+  max-width: 380px;
+  margin: 80px auto;
+  padding: 32px;
+  background-color: #1e1e2f; /* koyu zemin */
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  text-align: center;
+  transition: all 0.3s ease;
+  color: #e0e0e0;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #ffffff;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #444;
+  background-color: #2a2a3d;
+  color: #f0f0f0;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: #4facfe;
+  outline: none;
+  background-color: #333348;
+}
+
+.button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 6px;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+
+.separator {
+  margin: 20px 0;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.googleWrapper {
+  margin-top: 10px;
+}

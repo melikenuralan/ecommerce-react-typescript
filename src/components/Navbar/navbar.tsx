@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
@@ -10,31 +10,47 @@ const navLinks = [
   { name: "İletişim", href: "/contact" },
 ];
 
+const basketItems = [
+  { productId: "1", name: "Kırmızı Tişört", quantity: 2 },
+  { productId: "2", name: "Siyah Ayakkabı", quantity: 1 },
+];
+
+const totalQuantity = basketItems.reduce((sum, item) => sum + item.quantity, 0);
+
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar__logo}>
-        <a href="/">eCommercial</a>
+        <Link to="/">eCommercial</Link>
       </div>
+
       <ul className={styles.navbar__links}>
         {navLinks.map((link) => (
           <li key={link.name}>
-            <a href={link.href}>{link.name}</a>
+            <Link to={link.href}>{link.name}</Link>
           </li>
         ))}
       </ul>
+
       <div className={styles.navbar__actions}>
-        <button className={styles.navbar__cart}>
-          <span role="img" aria-label="cart">🛒</span>
+        <button
+          className={styles.navbar__cart}
+          onClick={() => navigate("/basket")}
+        >
+          <span role="img" aria-label="cart">
+            🛒 ({totalQuantity})
+          </span>
         </button>
+
         <button
           className={styles.navbar__login}
           onClick={() => navigate("/login")}
         >
           Giriş Yap
         </button>
+
         <button
           className={styles.navbar__register}
           onClick={() => navigate("/register")}
